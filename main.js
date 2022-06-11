@@ -10,7 +10,6 @@ var loginId = path.join (userName);
 const uid = loginId;
 const cfonts = require ('cfonts');
 const {lookupService} = require ('dns');
-const info = require ('./constants.json');
 const banner = cfonts.render (`${uid}'s\nLocal\nDatabase!`, {
   font: 'block', //simpleBlock
   colors: '#fffd54',
@@ -26,9 +25,11 @@ async function mainProcess () {
   systemDisk ().then (disk => {
     drive += disk;
     var usersDet = `${drive}/windows/system32/storage`;
-    info.locationDir = usersDet;
+    let info = {
+      locationDir: usersDet
+    }
     fs.writeFileSync (
-      './constants.json',
+      `${usersDet}/constants.json`,
       JSON.stringify (info, null, 2),
       err => {
         if (err) throw err;
