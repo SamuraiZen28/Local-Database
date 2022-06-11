@@ -26,8 +26,8 @@ async function mainProcess () {
     drive += disk;
     var usersDet = `${drive}/windows/system32/storage`;
     let info = {
-      locationDir: usersDet
-    }
+      locationDir: usersDet,
+    };
     fs.writeFileSync (
       `${usersDet}/constants.json`,
       JSON.stringify (info, null, 2),
@@ -290,9 +290,20 @@ async function mainProcess () {
             });
           } else if (cmd === cmdCollections[1]) {
             if (!fs.existsSync (`${usersDet}/local_DB/DATABASE`)) {
+              let sizeArray = [];
               fs.mkdirSync (`${usersDet}/local_DB/DATABASE`, {recursive: true});
-              let size = fs.readdirSync (`${usersDet}/local_DB/DATABASE`)
-                .length;
+              let size = fs
+                .readdirSync (`${usersDet}/local_DB/DATABASE`)
+                .forEach (i => {
+                  let stats = fs.statSync (
+                    `${usersDet}/local_DB/DATABASE/${i}`
+                  );
+                  if (stats.isFile ()) {
+                    return;
+                  }
+                  sizeArray = [...sizeArray, i];
+                  return sizeArray.length;
+                });
               if (size === 0) {
                 rl.question (`Folder name> `, async folderName => {
                   fs.mkdirSync (`${usersDet}/local_DB/DATABASE/${folderName}`, {
