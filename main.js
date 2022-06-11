@@ -145,7 +145,7 @@ async function mainProcess () {
             }
           }
         );
-      } else if (checker.includes ('placeholder')) {
+      } else if (!checker.includes ('placeholder')) {
         return;
       }
     }
